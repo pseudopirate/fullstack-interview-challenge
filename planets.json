@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Naboo",
+    "code": "NAB"
+  },
+  {
+    "name": "Tatooine",
+    "code": "TAT"
+  },
+  {
+    "name": "Hoth",
+    "code": "HOH"
+  },
+  {
+    "name": "Coruscant",
+    "code": "CUS"
+  },
+  {
+    "name": "Kamino",
+    "code": "KAM"
+  },
+  {
+    "name": "Dagobah",
+    "code": "DAG"
+  }
+]
