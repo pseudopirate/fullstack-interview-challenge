@@ -1,4 +1,7 @@
-![image](https://user-images.githubusercontent.com/850110/153227453-ee147c59-830b-48ad-930e-7075d3229ae4.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/850110/153227453-ee147c59-830b-48ad-930e-7075d3229ae4.png" title="AgileSearch" width="150" style="margin-bottom: 1rem" />
+</p>
+
 
 👋  Hej välkommen på [AgileSearch](agilesearch) fullstack challenge!
 
