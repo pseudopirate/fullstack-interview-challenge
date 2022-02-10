@@ -42,4 +42,14 @@ The `planets.json` file has the information about the different planets that the
 
 You can always reach us by writing an email with all your questions and/or feedback about this challenge to devs@agilesearch.io
 
+# How to start
+
+We encourage you to fork this repository and when you are done with the challenge, you can send us the forked URL so we can later review it.
+
+If your solution needs to prepare an environment of any kind, please don't forget to let us know.
+
+###### 🙌  Psst, One more thing!
+
+The challenge is open to any solution. You can use your imagination, creativity and skills to deliver the best of the worlds you like the most.
+
 [agilesearch]: https://www.agilesearch.io
