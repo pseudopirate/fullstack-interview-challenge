@@ -17,9 +17,6 @@ rules: {
 }
 settings:
     import/resolver:
-    node:
-        extensions:
-        - ".js"
-        - ".jsx"
-        - ".ts"
-        - ".tsx"
+        node:
+            extensions:
+                - ".ts"
