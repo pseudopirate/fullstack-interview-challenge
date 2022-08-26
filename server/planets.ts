@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Destination, Planet } from './models';
+import { Destination, Planet } from '../models/common';
 
 export async function listPlanets() {
     const filepath = path.join(__dirname, '../planets.json');

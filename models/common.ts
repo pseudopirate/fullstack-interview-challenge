@@ -10,5 +10,3 @@ export interface Destination {
     price: number;
     availability: number;
 }
-
-export type GetPlanetsRequestQuery = Pick<Destination, 'origin' | 'destination' | 'data'> & {duration: number};

@@ -21,7 +21,8 @@
     },
     "include": [
         "server/**/*.ts",
-        "ui/**/*.ts"
+        "ui/**/*.ts",
+        "models/**/*.ts"
     ],
     "exclude": ["node_modules"]
 }

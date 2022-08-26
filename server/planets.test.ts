@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Destination } from './models';
+import { Destination } from '../models/common';
 import {
     listAvailableDestinations, listDestinations, listPlanets,
 } from './planets';
