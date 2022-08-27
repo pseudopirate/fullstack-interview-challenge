@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TravelForm prepareFromValues(values: FormValues) should do smth 1`] = `
+Object {
+  "departureDate": 1661621605,
+  "destinations": Array [
+    "TEST2",
+  ],
+  "durationOfStay": 5,
+  "origin": "TEST",
+}
+`;

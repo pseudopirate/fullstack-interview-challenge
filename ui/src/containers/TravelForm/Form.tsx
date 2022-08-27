@@ -75,7 +75,7 @@ function TravelFormContent({planets}: TravelFormContent) {
             </Field>
 
             <Grid item xs={12}>
-                <Button type="submit" variant="contained">Prepare my trip</Button>
+                <Button type="submit" variant="contained">Plan my trip</Button>
             </Grid>
 
             <OnChange name="origin">

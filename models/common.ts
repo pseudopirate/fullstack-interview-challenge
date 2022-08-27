@@ -10,3 +10,10 @@ export interface Destination {
     price: number;
     availability: number;
 }
+
+export interface TripPostRequest {
+    origin: Planet['code'];
+    destinations: Planet['code'][];
+    durationofStay: number;
+    departureDate: number; // millis
+}

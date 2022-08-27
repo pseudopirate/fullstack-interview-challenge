@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { getData } from '../../utils';
+import { getData, sendData } from '../../utils';
 import {Planet} from '../../../../models/common';
 import TravelFormContent from './Form';
 import { DateTime } from 'luxon';
@@ -31,6 +31,17 @@ export interface FormContentProps {
     planets: Planet[];
 }
 
+export function prepareFromValues({
+    origin, destinations, durationOfStay, departureDate
+}: FormValues) {
+    return {
+        origin,
+        destinations,
+        durationOfStay,
+        departureDate: departureDate.toUnixInteger()
+    };
+}
+
 const FormContent = ({planets}: FormContentProps) => {
     const initialValues = React.useMemo(() => {
         return {
@@ -43,8 +54,9 @@ const FormContent = ({planets}: FormContentProps) => {
 
     return (
         <Form<FormValues>
-            onSubmit={(...vars) => {
-                console.log(vars);
+            onSubmit={async (vals) => {
+                const data = prepareFromValues(vals);
+                await sendData('/trip', data);
             }}
             initialValues={initialValues}
             // validate={validate}
