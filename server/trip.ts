@@ -1,4 +1,8 @@
+import { DateTime } from 'luxon';
+import { Destination } from '../models/common';
+import { DATE_FORMAT } from './costants';
 import GalaxyMap from './GalaxyMap';
+import { filterExpiredDestinations, listDestinations } from './planets';
 
 export function prepareDestinatiaons(destinations: string[], galaxyMap: GalaxyMap) {
     return destinations
@@ -56,3 +60,53 @@ export function findPaths(from: string, to: string[], galaxyMap: GalaxyMap) {
     return tripPaths;
 }
 
+function toDateTime(data: string) {
+    return DateTime.fromFormat(data, DATE_FORMAT);
+}
+
+function findClosestDate(
+    origin: string, destination: string, departureDate: DateTime, destinations: Destination[],
+) { 
+    const dests = destinations
+        .filter((dest) => dest.origin === origin && dest.destination === destination)
+        .filter((dest) => toDateTime(dest.data) >= departureDate)
+        .sort((a, b) => {
+            return toDateTime(a.data).toUnixInteger() - toDateTime(b.data).toUnixInteger()
+            || a.price - b.price; // sort by date and price
+        });
+    return dests[0];
+}
+
+export async function enrichPaths( // TODO tests
+    paths: string[][], durationofStay: number, departureDate: string,
+) {
+    const destinations = await listDestinations();
+    const filteredDestinations = filterExpiredDestinations(departureDate, destinations);
+    const date = toDateTime(departureDate);
+
+    return paths // replace string paths with actual destinations objects
+        .map((item, i) => {
+            const enriched = [];
+            const path = [...item]; // copy path to avoid mutability
+
+            let origin = path.shift();
+
+            while (path.length > 0) {
+                const dest = path.shift();
+
+                if (!origin || !dest) {
+                    break;
+                }
+
+                const closest = findClosestDate(
+                    origin, dest, date.plus({days: durationofStay * i}), filteredDestinations,
+                );
+
+                enriched.push(closest);
+
+                origin = dest;
+            }
+
+            return enriched;
+        });
+}

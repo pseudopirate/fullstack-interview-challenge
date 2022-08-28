@@ -1,7 +1,7 @@
 import express, {NextFunction, Request, Response} from 'express';
 import { TripPostRequest } from '../models/common';
 import { getGalaxyMap, listPlanets } from './planets';
-import { findPaths, prepareDestinatiaons } from './trip';
+import { enrichPaths, findPaths, prepareDestinatiaons } from './trip';
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,7 +19,7 @@ app.get('/planets', async (__, res) => {
 });
 
 app.post('/trip', async (req: Request<unknown, TripPostRequest>, res: Response) => {
-    const {origin, destinations} = req.body as TripPostRequest;
+    const {origin, destinations, durationOfStay, departureDate} = req.body as TripPostRequest;
     const galaxyMap = await getGalaxyMap();
     const errors: string[] = [];
 
@@ -41,7 +41,9 @@ app.post('/trip', async (req: Request<unknown, TripPostRequest>, res: Response) 
         paths = findPaths(origin, dests, galaxyMap);
     }
 
-    res.send({paths, errors});
+    const enrichedPaths = await enrichPaths(paths, durationOfStay, departureDate);
+
+    res.send({paths: enrichedPaths, errors});
 });
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

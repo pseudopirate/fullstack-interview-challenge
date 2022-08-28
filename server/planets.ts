@@ -3,6 +3,7 @@ import path from 'path';
 import { Destination, Planet } from '../models/common';
 import { DateTime } from 'luxon';
 import GalaxyMap from './GalaxyMap';
+import { DATE_FORMAT } from './costants';
 // import DestinationsGraph from './DestinationsGraph';
 
 export async function listPlanets() {
@@ -19,7 +20,6 @@ export async function listDestinations() {
     return JSON.parse(planets) as Destination[];
 }
 
-const DATE_FORMAT = 'yyyy-MM-dd';
 
 export function filterExpiredDestinations(from: string, dests: Destination[]) {
     const fromData = DateTime.fromFormat(from, DATE_FORMAT);

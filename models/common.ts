@@ -14,6 +14,6 @@ export interface Destination {
 export interface TripPostRequest {
     origin: Planet['code'];
     destinations: Planet['code'][];
-    durationofStay: number;
+    durationOfStay: number;
     departureDate: string; // YYYY-M-DD
 }
