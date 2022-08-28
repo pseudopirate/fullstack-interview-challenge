@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircularProgress } from "@mui/material";
+import { CircularProgress } from '@mui/material';
 
 function Loader({timeout = 500}) {
     const [visible, setVisible] = React.useState(false);

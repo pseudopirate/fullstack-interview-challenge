@@ -8,7 +8,7 @@ const Header = () => (
                 <img src={logo} alt="logo" height="75" width="75"/>
             </a>
         </Grid>
-        <Grid item>
+        <Grid item xs={5}>
             <h2>Sith Empire travel service</h2>
         </Grid>
     </Grid>

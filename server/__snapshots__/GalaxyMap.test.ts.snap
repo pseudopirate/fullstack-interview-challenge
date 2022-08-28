@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GalaxyMap addRoute(from: string, to: string should add routes 1`] = `
+GalaxyMap {
+  "routes": Object {
+    "TEST1": Object {
+      "from": "TEST1",
+      "to": Array [
+        "TEST2",
+        "TEST3",
+      ],
+    },
+    "TEST2": Object {
+      "from": "TEST2",
+      "to": Array [
+        "TEST3",
+      ],
+    },
+    "TEST3": Object {
+      "from": "TEST3",
+      "to": Array [],
+    },
+  },
+}
+`;
+
+exports[`GalaxyMap findShortestPath(from: string, to: string) Graph 1 should match snapshot 1`] = `
+GalaxyMap {
+  "routes": Object {
+    "a": Object {
+      "from": "a",
+      "to": Array [
+        "b",
+        "c",
+        "d",
+      ],
+    },
+    "b": Object {
+      "from": "b",
+      "to": Array [
+        "f",
+        "a",
+      ],
+    },
+    "c": Object {
+      "from": "c",
+      "to": Array [
+        "e",
+      ],
+    },
+    "d": Object {
+      "from": "d",
+      "to": Array [
+        "i",
+      ],
+    },
+    "e": Object {
+      "from": "e",
+      "to": Array [],
+    },
+    "f": Object {
+      "from": "f",
+      "to": Array [
+        "e",
+      ],
+    },
+    "i": Object {
+      "from": "i",
+      "to": Array [],
+    },
+  },
+}
+`;

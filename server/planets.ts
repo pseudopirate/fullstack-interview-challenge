@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { Destination, Planet } from '../models/common';
+import { DateTime } from 'luxon';
+import GalaxyMap from './GalaxyMap';
+// import DestinationsGraph from './DestinationsGraph';
 
 export async function listPlanets() {
     const filepath = path.join(__dirname, '../planets.json');
@@ -16,37 +19,31 @@ export async function listDestinations() {
     return JSON.parse(planets) as Destination[];
 }
 
-type Predicate<T> = (arg: T) => boolean
+const DATE_FORMAT = 'yyyy-MM-dd';
 
-type ListAvailableDestinationsArgs = Partial<Pick<Destination, 'data' | 'origin' | 'destination'>>;
-
-export async function listAvailableDestinations(
-    { data, origin, destination }: ListAvailableDestinationsArgs,
-) {
-    const dests = await listDestinations();
-    const predicates = [] as Predicate<Destination>[];
-
-    if (data) {
-        predicates.push(
-            (dest) => new Date(dest.data).getTime() >= new Date(data).getTime(),
-        );
-    }
-
-    if (origin) {
-        predicates.push(
-            (dest) => dest.origin === origin,
-        );
-    }
-
-    if (destination) {
-        predicates.push(
-            (dest) => dest.destination === destination,
-        );
-    }
-
+export function filterExpiredDestinations(from: string, dests: Destination[]) {
+    const fromData = DateTime.fromFormat(from, DATE_FORMAT);
     return dests
-        .filter(
-            (dest) => predicates.every((fn) => fn(dest)),
-        )
-        .sort((a, b) => a.price - b.price);
+        .filter((dest) => {
+            const destData = DateTime.fromFormat(dest.data, DATE_FORMAT);
+
+            return dest.availability > 0 && destData >= fromData;
+        });    
+}
+
+let gm: GalaxyMap;
+
+export async function getGalaxyMap() {
+    if (gm) {
+        return gm;
+    }
+
+    const dests = await listDestinations();
+    gm = new GalaxyMap();
+
+    dests.forEach((dest) => {
+        gm.addRoute(dest.origin, dest.destination);
+    });
+
+    return gm;
 }

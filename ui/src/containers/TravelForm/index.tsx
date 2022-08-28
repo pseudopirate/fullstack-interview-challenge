@@ -32,13 +32,13 @@ export interface FormContentProps {
 }
 
 export function prepareFromValues({
-    origin, destinations, durationOfStay, departureDate
+    origin, destinations, durationOfStay, departureDate,
 }: FormValues) {
     return {
         origin,
         destinations,
         durationOfStay,
-        departureDate: departureDate.toUnixInteger()
+        departureDate: departureDate.toFormat('yyyy-MM-dd'),
     };
 }
 
@@ -48,7 +48,7 @@ const FormContent = ({planets}: FormContentProps) => {
             origin: 'TAT',
             destinations: [],
             departureDate: DateTime.now(),
-            durationOfStay: 15
+            durationOfStay: 15,
         };
     }, [planets]);
 

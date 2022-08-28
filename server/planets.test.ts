@@ -1,8 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { Destination } from '../models/common';
 import {
-    listAvailableDestinations, listDestinations, listPlanets,
+    filterExpiredDestinations,
+    listDestinations, listPlanets,
 } from './planets';
 
 describe('planets', () => {
@@ -25,51 +23,41 @@ describe('planets', () => {
         });
     });
 
-    jest.mock('../planets', () => ({
-        listDestinations: async () => {
-            const filepath = path.join(__dirname, '../dataset.test.json');
-            const planets = await fs.promises.readFile(filepath, 'utf8');
+    describe('filterExpiredDestinations(from: string, dests: Destination[])', () => {
+        const dests = [
+            {
+                'data': '2022-09-14',
+                'origin': 'TEST1',
+                'destination': 'NAB',
+                'price': 492.09,
+                'availability': 0,
+            },
+            {
+                'data': '2022-09-15',
+                'origin': 'TEST2',
+                'destination': 'NAB',
+                'price': 492.09,
+                'availability': 1,
+            },
+            {
+                'data': '2022-10-14',
+                'origin': 'TEST3',
+                'destination': 'NAB',
+                'price': 492.09,
+                'availability': 22,
+            },
+        ];
 
-            return JSON.parse(planets) as Destination[];
-        },
-    }));
-
-    describe('listAvailableDestinations(date: number)', () => {
-        it('should filter by date return empty list', async () => {
-            const data = '2222-11-11';
-            const dests = await listAvailableDestinations({ data });
-            expect(dests).toEqual([]);
+        it('should return empty list', () => {
+            expect(filterExpiredDestinations('2022-11-14', dests)).toEqual([]);
         });
 
-        it('should filter by date match snapshot', async () => {
-            const data = '2022-11-06';
-            const dests = await listAvailableDestinations({ data });
-            expect(dests).toMatchSnapshot();
+        it('should filter out unavailable destinations', () => {
+            expect(filterExpiredDestinations('2021-08-14', dests)).toEqual([dests[1], dests[2]]);
         });
 
-        it('should return all and match snapshot', async () => {
-            const dests = await listAvailableDestinations({});
-            expect(dests).toMatchSnapshot();
-        });
-
-        it('should filter by origin and return empty list', async () => {
-            const dests = await listAvailableDestinations({ origin: 'ALD' });
-            expect(dests).toEqual([]);
-        });
-
-        it('should filter by origin and match snapshot', async () => {
-            const dests = await listAvailableDestinations({ origin: 'TAT' });
-            expect(dests).toMatchSnapshot();
-        });
-
-        it('should filter by destination and return empty list', async () => {
-            const dests = await listAvailableDestinations({ destination: 'ALD' });
-            expect(dests).toEqual([]);
-        });
-
-        it('should filter by destination and match snapshot', async () => {
-            const dests = await listAvailableDestinations({ destination: 'TAT' });
-            expect(dests).toMatchSnapshot();
+        it('should return one destination', () => {
+            expect(filterExpiredDestinations('2022-10-14', dests)).toEqual([dests[2]]);
         });
     });
 });

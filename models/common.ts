@@ -15,5 +15,5 @@ export interface TripPostRequest {
     origin: Planet['code'];
     destinations: Planet['code'][];
     durationofStay: number;
-    departureDate: number; // millis
+    departureDate: string; // YYYY-M-DD
 }

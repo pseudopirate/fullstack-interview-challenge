@@ -1,5 +1,5 @@
-import { DateTime } from "luxon";
-import { FormValues, prepareFromValues } from ".";
+import { DateTime } from 'luxon';
+import { FormValues, prepareFromValues } from '.';
 
 describe('TravelForm', () => {
     describe('prepareFromValues(values: FormValues)', () => {
@@ -12,7 +12,7 @@ describe('TravelForm', () => {
             departureDate: DateTime.fromMillis(AUGUST_27_2022_MILLIS),
         } as FormValues;
 
-        it('should do smth', () => {
+        it('should return prepared form values', () => {
             expect(prepareFromValues(values)).toMatchSnapshot();
         });
     });
