@@ -3,8 +3,8 @@ export async function getData<T>(url: string) {
     return resp.json() as Promise<T>;
 }
 
-export async function sendData<T>(url: string, data: T) {
-    await fetch(
+export async function sendData<TResp, TData>(url: string, data: TData) {
+    const resp = await fetch(
         url,
         {
             method: 'POST',
@@ -14,4 +14,6 @@ export async function sendData<T>(url: string, data: T) {
             body: JSON.stringify(data),
         },
     );
+
+    return resp.json() as Promise<TResp>;
 }

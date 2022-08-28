@@ -1,10 +1,11 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { getData, sendData } from '../../utils';
-import {Planet} from '../../../../models/common';
+import {Destination, Planet, TripPostRequest, TripPostResponse} from '../../../../models/common';
 import TravelFormContent from './Form';
 import { DateTime } from 'luxon';
 import Loader from '../../components/Loader';
+import ResponseContainer from './ResponseContainer';
 
 
 function TravelForm() {
@@ -43,6 +44,9 @@ export function prepareFromValues({
 }
 
 const FormContent = ({planets}: FormContentProps) => {
+    const [errors, setErrors] = React.useState<string[]>();
+    const [trip, setTrip] = React.useState<Destination[][]>();
+
     const initialValues = React.useMemo(() => {
         return {
             origin: 'TAT',
@@ -53,20 +57,30 @@ const FormContent = ({planets}: FormContentProps) => {
     }, [planets]);
 
     return (
-        <Form<FormValues>
-            onSubmit={async (vals) => {
-                const data = prepareFromValues(vals);
-                await sendData('/trip', data);
-            }}
-            initialValues={initialValues}
+        <>
+            <Form<FormValues>
+                onSubmit={async (vals) => {
+                    const data = prepareFromValues(vals);
+                    try {
+                        const resp =
+                            await sendData<TripPostResponse, TripPostRequest>('/trip', data);
+                        setErrors(resp.errors);
+                        setTrip(resp.paths);
+                    } catch (e) {
+                        setErrors([(e as Error).message]);
+                    }
+                }}
+                initialValues={initialValues}
             // validate={validate}
-        >
-            {({handleSubmit}) => (
-                <form onSubmit={handleSubmit}>
-                    <TravelFormContent planets={planets} />
-                </form>
-            )}
-        </Form>
+            >
+                {({handleSubmit}) => (
+                    <form onSubmit={handleSubmit}>
+                        <TravelFormContent planets={planets} />
+                    </form>
+                )}
+            </Form>
+            <ResponseContainer errors={errors} trip={trip}/>
+        </>
     );
 };
 

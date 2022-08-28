@@ -17,3 +17,8 @@ export interface TripPostRequest {
     durationOfStay: number;
     departureDate: string; // YYYY-M-DD
 }
+
+export interface TripPostResponse {
+    paths: Destination[][];
+    errors?: string[];
+}
