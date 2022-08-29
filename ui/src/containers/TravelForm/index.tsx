@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { getData, sendData } from '../../utils';
-import {Destination, Planet, TripPostRequest, TripPostResponse} from '../../../../models/common';
+import {Planet, TripPostRequest, TripPostResponse} from '../../../../models/common';
 import TravelFormContent from './Form';
 import { DateTime } from 'luxon';
 import Loader from '../../components/Loader';
-import ResponseContainer from './ResponseContainer';
+import ResponseContainer, { DestinationWithNames } from './ResponseContainer';
 
 
 function TravelForm() {
@@ -45,7 +45,7 @@ export function prepareFromValues({
 
 const FormContent = ({planets}: FormContentProps) => {
     const [errors, setErrors] = React.useState<string[]>();
-    const [trip, setTrip] = React.useState<Destination[][]>();
+    const [destinations, setDestinations] = React.useState<DestinationWithNames[][]>();
 
     const initialValues = React.useMemo(() => {
         return {
@@ -65,13 +65,25 @@ const FormContent = ({planets}: FormContentProps) => {
                         const resp =
                             await sendData<TripPostResponse, TripPostRequest>('/trip', data);
                         setErrors(resp.errors);
-                        setTrip(resp.paths);
+
+                        // add full planet names
+                        const planetsMap = planets.reduce((acc, {code, name}) => {
+                            acc[code] = name;
+                            return acc;
+                        }, {} as Record<string, string>);
+                        const paths = resp.paths
+                            .map((route) => route.map((dest) => ({
+                                ...dest,
+                                originName: planetsMap[dest.origin],
+                                destinationName: planetsMap[dest.destination],
+                            })));
+
+                        setDestinations(paths);
                     } catch (e) {
                         setErrors([(e as Error).message]);
                     }
                 }}
                 initialValues={initialValues}
-            // validate={validate}
             >
                 {({handleSubmit}) => (
                     <form onSubmit={handleSubmit}>
@@ -79,7 +91,7 @@ const FormContent = ({planets}: FormContentProps) => {
                     </form>
                 )}
             </Form>
-            <ResponseContainer errors={errors} trip={trip}/>
+            <ResponseContainer errors={errors} destinations={destinations}/>
         </>
     );
 };
