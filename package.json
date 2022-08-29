@@ -15,7 +15,6 @@
     "lint:ui": "eslint ui/**/*.{ts,tsx} --fix",
     "prepare": "husky install",
     "postinstall": "npm run install:server && npm run install:ui",
-    "start": "node src/index.js",
     "test": "jest",
     "typecheck": "NODE_OPTIONS=\"--max-old-space-size=1024\" tsc -p . --noEmit"
   },

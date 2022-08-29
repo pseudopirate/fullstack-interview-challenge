@@ -3,6 +3,15 @@
 </p>
 
 
+## Start app
+
+```bash
+npm ci
+npm run dev
+```
+
+## Introduction
+
 👋  Hej välkommen på [AgileSearch](agilesearch) fullstack challenge!
 
 My name is Broodar Plawind and I'm living in a far far away solar system located in the Arkanis sector of the Outer Rim Territories, in the Tatooine desert.
